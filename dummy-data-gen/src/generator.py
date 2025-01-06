@@ -1,5 +1,5 @@
 from activity import Activity, DayIterator
-from datetime import date
+from datetime import date, datetime, time, timedelta
 import argparse
 import dummy_data
 
@@ -16,10 +16,9 @@ def main():
     day_iterator = DayIterator(date(2024, 10, 1), date(2024, 10, 31))   
     
     for day in day_iterator:
-        print(day.strftime("%d.%m.%Y"))
-        print("--------")
         for person in dummy_data.persons():
-            minutes_left = 720 # should be depending on person
+            current_time = datetime.combine(day, time(8, 0)) # should depend on person
+            minutes_left = 720 # should also depend on person
             sum_minutes = 0
 
             current_activity: Activity = None
@@ -28,9 +27,8 @@ def main():
                 duration = dummy_data.simple_duration_dist(current_activity)
                 minutes_left -= duration
                 sum_minutes += duration
-                print(person + ";" + current_activity.name + ";" + str(duration))
-            print("--------")
-            print("Sum of minutes: " + str(sum_minutes) + "\n")
+                print(str(current_time) + ";" + person + ";" + current_activity.name + ";" + str(duration))
+                current_time += timedelta(minutes=duration)
 
 if __name__ == "__main__":
     main()

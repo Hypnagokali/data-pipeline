@@ -24,7 +24,8 @@ class DayIterator:
         if (self.current_date > self.end_date):
             raise StopIteration
         else:
+            next_date = self.current_date
             self.current_date += timedelta(days=1)
-            return self.current_date
+            return next_date
         
             
