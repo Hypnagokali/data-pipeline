@@ -12,6 +12,9 @@ def activities():
         Activity("Learn about architecture", 60, 120, True) 
     ]
 
+def simple_duration_dist(activity: Activity):
+    return random.randint(activity.minutes_min, activity.minutes_max)
+
 def rnd_activitiy(prev_activity):
     act = activities()
 
@@ -20,7 +23,6 @@ def rnd_activitiy(prev_activity):
         next = act[i]
         if (prev_activity is None or next != prev_activity):
             return next
-
 
 def rnd_focus(activity: Activity):
     if not activity.has_focus:
