@@ -1,15 +1,15 @@
 import random
+from activity import Activity
 
 def activities():
-    # i) use a class
-    # ii) recovery, focus attribute?
-    # iii) a distribution over the day (Day class): rnd_activity(prev, day)
+    # i) recovery, focus attribute?
+    # ii) a distribution over the day (Day class): rnd_activity(prev, day)
     return [
-        ("Project A", 30, 240, True), 
-        ("Learn Python", 30, 180, True),
-        ("Watching series or movie", 30, 240, False), 
-        ("Cleaning flat", 30, 120, False), 
-        ("Learn about architecture", 60, 120, True) 
+        Activity("Project A", 30, 240, True),
+        Activity("Learn Python", 30, 180, True),
+        Activity("Watching series or movie", 30, 240, False), 
+        Activity("Cleaning flat", 30, 120, False), 
+        Activity("Learn about architecture", 60, 120, True) 
     ]
 
 def rnd_activitiy(prev_activity):
@@ -22,8 +22,8 @@ def rnd_activitiy(prev_activity):
             return next
 
 
-def rnd_focus(activity):
-    if not activity[2]:
+def rnd_focus(activity: Activity):
+    if not activity.has_focus:
         return 0
     return random.randint(1, 4)
 

@@ -1,5 +1,6 @@
 import dummy_data
 import argparse
+from activity import Activity
 
 def main():
     parser = argparse.ArgumentParser(
@@ -11,10 +12,10 @@ def main():
 
     args = parser.parse_args()
         
-    current_activity = None
+    current_activity: Activity = None
     for el in range(args.size):
         current_activity = dummy_data.rnd_activitiy(current_activity)
-        print(str(el + 1) + ". activity: " + current_activity[0])
+        print(str(el + 1) + ". activity: " + current_activity.name)
 
 if __name__ == "__main__":
     main()
