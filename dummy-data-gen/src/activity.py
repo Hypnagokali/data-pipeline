@@ -62,7 +62,6 @@ class DayIterator:
 
 def activities():
     # i) recovery, focus attribute?
-    # ii) a distribution over the day (Day class): rnd_activity(prev, day)
     return [
         Activity("Project A", 30, 240, True),
         Activity("Learn Python", 30, 180, True),
