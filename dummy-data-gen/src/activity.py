@@ -1,4 +1,5 @@
 from datetime import datetime, date, time, timedelta
+from distribution_rnd import *
 from generator.data_generator import DataGenerator
 import random
 
@@ -30,11 +31,12 @@ class ActivityDataGenerator(DataGenerator):
                     current_time += timedelta(minutes=duration)
 
 class Activity:
-    def __init__(self, name, minutes_min, minutes_max, has_focus):
+    def __init__(self, name, minutes_min, minutes_max, has_focus, distribution):
         self.name = name
         self.minutes_min = minutes_min
         self.minutes_max = minutes_max
         self.has_focus = has_focus
+        self.distribution = distribution
     def __eq__(self, other):
         if not isinstance(other, Activity):
             return NotImplemented
@@ -58,16 +60,20 @@ class DayIterator:
             return next_date
         
 
+def relaxing():
+    return distribution(7.5, 1, 1, 20, 1, 1)
+
+def concentrating():
+    return distribution(10, 3, 1, 16, 3, 1)
 
 
 def activities():
-    # i) recovery, focus attribute?
     return [
-        Activity("Project A", 30, 240, True),
-        Activity("Learn Python", 30, 180, True),
-        Activity("Watching series or movie", 30, 240, False), 
-        Activity("Cleaning flat", 30, 120, False), 
-        Activity("Learn about architecture", 60, 120, True) 
+        Activity("Project A", 30, 240, True, concentrating()),
+        Activity("Learn Python", 30, 180, True, concentrating()),
+        Activity("Watching series or movie", 30, 240, False, relaxing()), 
+        Activity("Cleaning flat", 30, 120, False, concentrating()), # might be another distribution  
+        Activity("Learn about architecture", 60, 120, True, concentrating()) 
     ]
 
 def simple_duration_dist(activity: Activity):
