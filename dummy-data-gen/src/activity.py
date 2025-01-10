@@ -1,7 +1,9 @@
 from datetime import datetime, date, time, timedelta
+from typing import List
 from distribution_rnd import *
 from generator.data_generator import DataGenerator
 import random
+import numpy as np
 
 class ActivityDataGenerator(DataGenerator):
 
@@ -23,7 +25,7 @@ class ActivityDataGenerator(DataGenerator):
 
                 current_activity: Activity = None
                 while (minutes_left > 0): # Overtime allowed :)
-                    current_activity = rnd_activitiy(current_activity)
+                    current_activity = rnd_activitiy(current_activity, current_time)
                     duration = simple_duration_dist(current_activity)
                     minutes_left -= duration
                     sum_minutes += duration
@@ -37,11 +39,15 @@ class Activity:
         self.minutes_max = minutes_max
         self.has_focus = has_focus
         self.distribution = distribution
+        
     def __eq__(self, other):
         if not isinstance(other, Activity):
             return NotImplemented
         
         return self.name == other.name
+    
+    def __hash__(self):
+        return hash(self.name)
 
 class DayIterator:
     def __init__(self, start_date: date, end_date: date):
@@ -66,8 +72,10 @@ def relaxing():
 def concentrating():
     return distribution(10, 3, 1, 16, 3, 1)
 
+def simple_duration_dist(activity: Activity):
+    return random.randint(activity.minutes_min, activity.minutes_max)
 
-def activities():
+def create_activities():
     return [
         Activity("Project A", 30, 240, True, concentrating()),
         Activity("Learn Python", 30, 180, True, concentrating()),
@@ -76,17 +84,22 @@ def activities():
         Activity("Learn about architecture", 60, 120, True, concentrating()) 
     ]
 
-def simple_duration_dist(activity: Activity):
-    return random.randint(activity.minutes_min, activity.minutes_max)
+def rnd_activitiy(prev_activity: Activity, time: datetime):
+    activities: List[Activity] = create_activities()
 
-def rnd_activitiy(prev_activity):
-    act = activities()
+    if (prev_activity is not None):
+        # never do the same activity twice
+        activities = [a for a in activities if a.name != prev_activity.name]
 
-    while True: 
-        i = random.randint(0, len(act) - 1)
-        next = act[i]
-        if (prev_activity is None or next != prev_activity):
-            return next
+    probs = []
+
+    for i in range(0, len(activities)):
+        probs.append(activities[i].distribution(time.hour))
+    total = sum(probs)
+    normalized = [p / total for p in probs]
+
+    return np.random.choice(activities, p=normalized)
+
 
 def rnd_focus(activity: Activity):
     if not activity.has_focus:
