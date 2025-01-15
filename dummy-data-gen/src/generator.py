@@ -1,13 +1,10 @@
 from datetime import date
-import distribution_rnd
 from generator.data_generator import DataGenerator
 import argparse
 from activity import ActivityDataGenerator
 
 def generate_data(generator: DataGenerator):
-    generator.generate()
-    
-
+    data = generator.generate()
 
 def main():
     parser = argparse.ArgumentParser(
@@ -22,5 +19,5 @@ def main():
     generator = ActivityDataGenerator(date(2024, 10, 1), date(2024, 10, 31), args.size)
     generate_data(generator)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

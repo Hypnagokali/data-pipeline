@@ -14,8 +14,9 @@ class ActivityDataGenerator(DataGenerator):
 
 
     def generate(self):
-        day_iterator = DayIterator(self.activities_from, self.activities_to)   
-    
+        f = open('test_data.csv', 'w')
+        day_iterator = DayIterator(self.activities_from, self.activities_to)
+        f.write('datetime;person;activity;duration_in_minutes\n')
         for day in day_iterator:
             # persons should be injected by constructur
             for person in persons():
@@ -29,7 +30,7 @@ class ActivityDataGenerator(DataGenerator):
                     duration = simple_duration_dist(current_activity)
                     minutes_left -= duration
                     sum_minutes += duration
-                    print(str(current_time) + ";" + person + ";" + current_activity.name + ";" + str(duration))
+                    f.write(str(current_time) + ';' + person + ';' + current_activity.name + ';' + str(duration) + '\n')
                     current_time += timedelta(minutes=duration)
 
 class Activity:
