@@ -73,16 +73,24 @@ def relaxing():
 def concentrating():
     return distribution(10, 3, 1, 16, 3, 1)
 
+def do_stuff():
+    return distribution(11, 1, 1, 17, 2, 1)
+
 def simple_duration_dist(activity: Activity):
     return random.randint(activity.minutes_min, activity.minutes_max)
 
 def create_activities():
     return [
-        Activity("Project A", 30, 240, True, concentrating()),
+        Activity("Work on project A", 30, 240, True, concentrating()),
         Activity("Learn Python", 30, 180, True, concentrating()),
-        Activity("Watching series or movie", 30, 240, False, relaxing()), 
-        Activity("Cleaning flat", 30, 120, False, concentrating()), # might be another distribution  
-        Activity("Learn about architecture", 60, 120, True, concentrating()) 
+        Activity("Watch series or movie", 30, 240, False, relaxing()), 
+        Activity("Vacuum cleaning", 10, 20, False, do_stuff()), 
+        Activity("Clean kitchen", 20, 45, False, do_stuff()),  
+        Activity("Clean bath", 20, 60, False, do_stuff()), 
+        Activity("Learn about architecture", 60, 120, True, concentrating()),
+        Activity("Learn language", 10, 90, True, concentrating()),
+        Activity("Work on Project B", 30, 240, True, concentrating()),
+        Activity("Work on Project C", 30, 240, True, concentrating()),
     ]
 
 def rnd_activitiy(prev_activity: Activity, time: datetime):
